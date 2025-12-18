@@ -7,24 +7,20 @@ dotenv.config();
 
 const createAdmin = async () => {
   try {
-    // Connect to MongoDB
     await mongoose.connect(config.mongodbUri);
     console.log('Connected to MongoDB');
 
-    // Get admin details from command line arguments or use defaults
     const args = process.argv.slice(2);
     const email = args[0] || 'admin@example.com';
     const password = args[1] || 'admin123';
     const name = args[2] || 'Admin User';
 
-    // Check if admin already exists
     const existingAdmin = await User.findOne({ email });
     if (existingAdmin) {
       if (existingAdmin.role === 'admin') {
         console.log('Admin user already exists with this email:', email);
         process.exit(0);
       } else {
-        // Update existing user to admin
         existingAdmin.role = 'admin';
         await existingAdmin.save();
         console.log('User updated to admin:', email);
@@ -32,7 +28,6 @@ const createAdmin = async () => {
       }
     }
 
-    // Create admin user
     const admin = await User.create({
       name,
       email,

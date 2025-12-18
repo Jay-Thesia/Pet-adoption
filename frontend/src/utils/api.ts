@@ -10,7 +10,6 @@ const api: AxiosInstance = axios.create({
   }
 });
 
-// Add token to requests
 api.interceptors.request.use(
   (requestConfig) => {
     const token = localStorage.getItem('token');
@@ -24,12 +23,19 @@ api.interceptors.request.use(
   }
 );
 
-// Handle response errors
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ApiResponse<any>>) => {
-    // Handle 401 - Unauthorized
     if (error.response?.status === 401) {
+      const requestUrl = error.config?.url || '';
+      const isAuthEndpoint = requestUrl.includes('/auth/login') || requestUrl.includes('/auth/register');
+      
+      if (isAuthEndpoint) {
+        const errorMessage = error.response.data?.message || 'Invalid credentials';
+        toast.error(errorMessage);
+        return Promise.reject(error);
+      }
+      
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       toast.error('Session expired. Please login again.');
@@ -37,7 +43,26 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Handle other errors
+    if (error.response?.status === 400 && error.response.data?.errors && Array.isArray(error.response.data.errors)) {
+      const validationErrors = error.response.data.errors;
+      
+      if (validationErrors.length === 1) {
+        const err = validationErrors[0];
+        toast.error(`${err.field}: ${err.message}`);
+      } else {
+        toast.error(`Validation failed: ${validationErrors.length} error(s) found`);
+        validationErrors.forEach((err, index) => {
+          setTimeout(() => {
+            toast.error(`${err.field}: ${err.message}`, {
+              position: 'top-right',
+              autoClose: 3000
+            });
+          }, (index + 1) * 100);
+        });
+      }
+      return Promise.reject(error);
+    }
+
     if (error.response) {
       const errorMessage = error.response.data?.message || 
                           (error.response.data?.errors && error.response.data.errors[0]?.message) ||

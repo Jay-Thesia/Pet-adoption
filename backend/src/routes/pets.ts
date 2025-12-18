@@ -10,9 +10,6 @@ import {
 
 const router = express.Router();
 
-// @route   GET /api/pets
-// @desc    Get all pets with search, filter, and pagination
-// @access  Public (but checks auth if token provided to show all pets to admins)
 router.get(
   '/',
   optionalAuth,
@@ -20,14 +17,8 @@ router.get(
   petController.getAllPets
 );
 
-// @route   GET /api/pets/:id
-// @desc    Get single pet by ID
-// @access  Public
 router.get('/:id', petController.getPetById);
 
-// @route   POST /api/pets
-// @desc    Create a new pet
-// @access  Private/Admin
 router.post(
   '/',
   protect,
@@ -36,9 +27,6 @@ router.post(
   petController.createPet
 );
 
-// @route   PUT /api/pets/:id
-// @desc    Update a pet
-// @access  Private/Admin
 router.put(
   '/:id',
   protect,
@@ -47,9 +35,6 @@ router.put(
   petController.updatePet
 );
 
-// @route   DELETE /api/pets/:id
-// @desc    Delete a pet
-// @access  Private/Admin
 router.delete(
   '/:id',
   protect,

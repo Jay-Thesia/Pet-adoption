@@ -8,7 +8,6 @@ interface GetAllAdoptionsResult {
 }
 
 export const createAdoption = async (petId: string, applicantId: string): Promise<IAdoption> => {
-  // Check if pet exists and is available
   const pet = await Pet.findById(petId);
   if (!pet) {
     throw new Error('Pet not found');
@@ -18,7 +17,6 @@ export const createAdoption = async (petId: string, applicantId: string): Promis
     throw new Error('Pet is not available for adoption');
   }
 
-  // Check if user already applied
   const existingApplication = await Adoption.findOne({
     pet: petId,
     applicant: applicantId
@@ -28,7 +26,6 @@ export const createAdoption = async (petId: string, applicantId: string): Promis
     throw new Error('You have already applied for this pet');
   }
 
-  // Create adoption application
   const adoption = await Adoption.create({
     pet: petId,
     applicant: applicantId
@@ -104,7 +101,6 @@ export const approveAdoption = async (
     throw new Error('Application has already been processed');
   }
 
-  // Update adoption status
   adoption.status = 'approved';
   adoption.reviewedBy = reviewerId as any;
   adoption.reviewedAt = new Date();
@@ -113,11 +109,9 @@ export const approveAdoption = async (
   }
   await adoption.save();
 
-  // Update pet status
   const petId = typeof adoption.pet === 'object' ? adoption.pet._id : adoption.pet;
   await Pet.findByIdAndUpdate(petId, { status: 'adopted' });
 
-  // Reject all other pending applications for this pet
   await Adoption.updateMany(
     { 
       pet: petId, 
@@ -159,7 +153,6 @@ export const rejectAdoption = async (
     throw new Error('Application has already been processed');
   }
 
-  // Update adoption status
   adoption.status = 'rejected';
   adoption.reviewedBy = reviewerId as any;
   adoption.reviewedAt = new Date();

@@ -12,13 +12,11 @@ const generateToken = (id: string): string => {
 const register = async (userData: RegisterData) => {
   const { name, email, password } = userData;
 
-  // Check if user exists
   const userExists = await User.findOne({ email });
   if (userExists) {
     throw new Error('User already exists');
   }
 
-  // Create user
   const user = await User.create({
     name,
     email,
@@ -42,13 +40,11 @@ const register = async (userData: RegisterData) => {
 const login = async (credentials: LoginData) => {
   const { email, password } = credentials;
 
-  // Check if user exists and get password
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
     throw new Error('Invalid credentials');
   }
 
-  // Check password
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
     throw new Error('Invalid credentials');

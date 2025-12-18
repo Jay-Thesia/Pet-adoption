@@ -10,9 +10,6 @@ import {
 
 const router = express.Router();
 
-// @route   POST /api/adoptions
-// @desc    Apply to adopt a pet
-// @access  Private/User
 router.post(
   '/',
   protect,
@@ -20,18 +17,12 @@ router.post(
   adoptionController.createAdoption
 );
 
-// @route   GET /api/adoptions/my-applications
-// @desc    Get current user's adoption applications
-// @access  Private/User
 router.get(
   '/my-applications',
   protect,
   adoptionController.getUserApplications
 );
 
-// @route   GET /api/adoptions
-// @desc    Get all adoption applications (Admin only)
-// @access  Private/Admin
 router.get(
   '/',
   protect,
@@ -40,9 +31,6 @@ router.get(
   adoptionController.getAllAdoptions
 );
 
-// @route   PUT /api/adoptions/:id/approve
-// @desc    Approve an adoption application
-// @access  Private/Admin
 router.put(
   '/:id/approve',
   protect,
@@ -51,9 +39,6 @@ router.put(
   adoptionController.approveAdoption
 );
 
-// @route   PUT /api/adoptions/:id/reject
-// @desc    Reject an adoption application
-// @access  Private/Admin
 router.put(
   '/:id/reject',
   protect,

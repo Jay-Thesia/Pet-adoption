@@ -36,7 +36,6 @@ const adoptionSchema = new Schema<IAdoption>({
   timestamps: true
 });
 
-// Prevent duplicate applications
 adoptionSchema.index({ pet: 1, applicant: 1 }, { unique: true });
 
 const Adoption: Model<IAdoption> = mongoose.model<IAdoption>('Adoption', adoptionSchema);

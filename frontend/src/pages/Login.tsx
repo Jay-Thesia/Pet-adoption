@@ -25,6 +25,15 @@ const Login: React.FC = () => {
     resolver: yupResolver(loginSchema)
   });
 
+  const onError = (errors: any): void => {
+    const errorMessages = Object.values(errors).map((error: any) => error.message);
+    if (errorMessages.length > 0) {
+      errorMessages.forEach((message: string) => {
+        toast.error(message);
+      });
+    }
+  };
+
   const onSubmit = async (data: LoginFormData): Promise<void> => {
     try {
       setIsSubmitting(true);
@@ -32,8 +41,8 @@ const Login: React.FC = () => {
       toast.success('Login successful!');
       navigate('/home');
     } catch (err: any) {
-      // Error is already handled by API interceptor
       setIsSubmitting(false);
+
     }
   };
 
@@ -41,7 +50,7 @@ const Login: React.FC = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input

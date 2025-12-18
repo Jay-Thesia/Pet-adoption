@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Pet, ApiResponse, Pagination } from '../types';
 import { PLACEHOLDER_IMAGE } from '../utils/constants';
+import { useDebounce } from '../hooks/useDebounce';
 import './Home.css';
 
 const Home: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [pagination, setPagination] = useState<Pagination | null>(null);
+  
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [breedInput, setBreedInput] = useState<string>('');
+  const [ageInput, setAgeInput] = useState<string>('');
+  
   const [filters, setFilters] = useState({
     search: '',
     species: '',
@@ -17,17 +23,44 @@ const Home: React.FC = () => {
     page: 1
   });
 
+  const debouncedSearch = useDebounce(searchInput.trim(), 500);
+  const debouncedBreed = useDebounce(breedInput.trim(), 500);
+  const debouncedAge = useDebounce(ageInput.trim(), 500);
+
+  useEffect(() => {
+    setFilters(prev => ({ 
+      ...prev, 
+      search: debouncedSearch, 
+      page: 1 
+    }));
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    setFilters(prev => ({ 
+      ...prev, 
+      breed: debouncedBreed, 
+      page: 1 
+    }));
+  }, [debouncedBreed]);
+
+  useEffect(() => {
+    setFilters(prev => ({ 
+      ...prev, 
+      age: debouncedAge, 
+      page: 1 
+    }));
+  }, [debouncedAge]);
+
   useEffect(() => {
     fetchPets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters.page, filters.species, filters.breed, filters.age]);
+  }, [filters.page, filters.search, filters.species, filters.breed, filters.age]);
 
   const fetchPets = async (): Promise<void> => {
     try {
       setLoading(true);
       const params: any = {
         page: filters.page,
-        limit: 12
+        limit: 10
       };
 
       if (filters.search) {
@@ -57,14 +90,13 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent): void => {
+  const handleSearchSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    setFilters({ ...filters, page: 1 });
-    fetchPets();
+    setFilters(prev => ({ ...prev, search: searchInput.trim(), page: 1 }));
   };
 
-  const handleFilterChange = (key: string, value: string): void => {
-    setFilters({ ...filters, [key]: value, page: 1 });
+  const handleSpeciesChange = (value: string): void => {
+    setFilters({ ...filters, species: value, page: 1 });
   };
 
   return (
@@ -75,12 +107,12 @@ const Home: React.FC = () => {
       </div>
 
       <div className="filters-section">
-        <form onSubmit={handleSearch} className="search-form">
+        <form onSubmit={handleSearchSubmit} className="search-form">
           <input
             type="text"
             placeholder="Search by name or breed..."
-            value={filters.search}
-            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             className="search-input"
           />
           <button type="submit" className="btn btn-primary">Search</button>
@@ -89,7 +121,7 @@ const Home: React.FC = () => {
         <div className="filters">
           <select
             value={filters.species}
-            onChange={(e) => handleFilterChange('species', e.target.value)}
+            onChange={(e) => handleSpeciesChange(e.target.value)}
             className="filter-select"
           >
             <option value="">All Species</option>
@@ -103,16 +135,16 @@ const Home: React.FC = () => {
           <input
             type="text"
             placeholder="Breed"
-            value={filters.breed}
-            onChange={(e) => handleFilterChange('breed', e.target.value)}
+            value={breedInput}
+            onChange={(e) => setBreedInput(e.target.value)}
             className="filter-input"
           />
 
           <input
             type="number"
             placeholder="Age"
-            value={filters.age}
-            onChange={(e) => handleFilterChange('age', e.target.value)}
+            value={ageInput}
+            onChange={(e) => setAgeInput(e.target.value)}
             className="filter-input"
             min="0"
           />
@@ -124,7 +156,7 @@ const Home: React.FC = () => {
       ) : (
         <>
           <div className="pets-grid">
-            {pets.map((pet) => (
+            {pets.length > 0 ? pets.map((pet) => (
               <div key={pet._id} className="pet-card">
                 <img 
                   src={pet.photo || PLACEHOLDER_IMAGE} 
@@ -145,7 +177,7 @@ const Home: React.FC = () => {
                   </Link>
                 </div>
               </div>
-            ))}
+            )): <div> No result found </div>}
           </div>
 
           {pagination && pagination.pages > 1 && (

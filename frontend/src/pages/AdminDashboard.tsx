@@ -78,7 +78,6 @@ const AdminDashboard: React.FC = () => {
         setPets(res.data.data);
       }
     } catch (error) {
-      // Error is already handled by API interceptor
     } finally {
       setLoading(false);
     }
@@ -92,7 +91,6 @@ const AdminDashboard: React.FC = () => {
         setAdoptions(res.data.data);
       }
     } catch (error) {
-      // Error is already handled by API interceptor
     } finally {
       setLoading(false);
     }
@@ -104,7 +102,6 @@ const AdminDashboard: React.FC = () => {
       toast.success('Adoption application approved successfully!');
       fetchAdoptions();
     } catch (error) {
-      // Error is already handled by API interceptor
     }
   };
 
@@ -114,7 +111,6 @@ const AdminDashboard: React.FC = () => {
       toast.success('Adoption application rejected.');
       fetchAdoptions();
     } catch (error) {
-      // Error is already handled by API interceptor
     }
   };
 
@@ -125,14 +121,21 @@ const AdminDashboard: React.FC = () => {
         toast.success('Pet deleted successfully!');
         fetchPets();
       } catch (error) {
-        // Error is already handled by API interceptor
       }
+    }
+  };
+
+  const onFormError = (errors: any): void => {
+    const errorMessages = Object.values(errors).map((error: any) => error.message);
+    if (errorMessages.length > 0) {
+      errorMessages.forEach((message: string) => {
+        toast.error(message);
+      });
     }
   };
 
   const handleSavePet = async (data: PetFormData): Promise<void> => {
     try {
-      // Ensure status is set to 'available' for new pets if not provided
       const petData = {
         ...data,
         status: data.status || 'available'
@@ -150,7 +153,6 @@ const AdminDashboard: React.FC = () => {
       reset();
       fetchPets();
     } catch (error) {
-      // Error is already handled by API interceptor
     }
   };
 
@@ -193,7 +195,7 @@ const AdminDashboard: React.FC = () => {
           {showPetForm && (
             <div className="pet-form-card">
               <h3>{editingPet ? 'Edit Pet' : 'Add New Pet'}</h3>
-              <form onSubmit={handleSubmit(handleSavePet)}>
+              <form onSubmit={handleSubmit(handleSavePet, onFormError)}>
                 <div className="form-group">
                   <label htmlFor="name">Name *</label>
                   <input

@@ -4,7 +4,6 @@ import User from '../models/User';
 import config from '../config';
 import { IUser, AuthRequest } from '../types';
 
-// Extend Express Request to include user
 declare global {
   namespace Express {
     interface Request {
@@ -13,7 +12,6 @@ declare global {
   }
 }
 
-// Protect routes - require authentication
 export const protect = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     let token: string | undefined;
@@ -46,7 +44,6 @@ export const protect = async (req: any, res: Response, next: NextFunction): Prom
   }
 };
 
-// Grant access to specific roles
 export const authorize = (...roles: string[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.user || !roles.includes(req.user.role)) {
@@ -59,7 +56,6 @@ export const authorize = (...roles: string[]) => {
   };
 };
 
-// Optional authentication - sets user if token is present, but doesn't require it
 export const optionalAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     let token: string | undefined;
@@ -77,7 +73,6 @@ export const optionalAuth = async (req: Request, res: Response, next: NextFuncti
           (req as AuthRequest).user = user as IUser;
         }
       } catch (error) {
-        // Token invalid or expired, continue without user
       }
     }
     

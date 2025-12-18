@@ -26,7 +26,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     if (token && storedUser) {
       setUser(JSON.parse(storedUser));
-      // Verify token is still valid
       api.get<{ success: boolean; user: User }>('/auth/me')
         .then(res => {
           if (res.data.success && res.data.user) {

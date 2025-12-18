@@ -19,7 +19,6 @@ const getAllPets = async (filters: PetFilters, user?: IUser): Promise<GetAllPets
 
   const skip = (page - 1) * limit;
 
-  // Build filter
   const filter: any = {};
   
   if (species) {
@@ -41,7 +40,6 @@ const getAllPets = async (filters: PetFilters, user?: IUser): Promise<GetAllPets
     ];
   }
 
-  // Only show available pets to public, admins can see all
   if (!user || user.role !== 'admin') {
     filter.status = 'available';
   }
@@ -117,7 +115,6 @@ const deletePet = async (petId: string): Promise<{ message: string }> => {
     throw new Error('Pet not found');
   }
 
-  // Delete associated adoptions
   await Adoption.deleteMany({ pet: petId });
 
   await Pet.findByIdAndDelete(petId);

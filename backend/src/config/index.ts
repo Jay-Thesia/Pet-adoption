@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 
-// Load environment variables
 dotenv.config();
 
 interface Config {
@@ -11,7 +10,6 @@ interface Config {
   nodeEnv: string;
 }
 
-// Validate required environment variables
 const getRequiredEnv = (key: string): string => {
   const value = process.env[key];
   if (!value) {
@@ -20,12 +18,10 @@ const getRequiredEnv = (key: string): string => {
   return value;
 };
 
-// Get optional environment variable with default
 const getOptionalEnv = (key: string, defaultValue: string): string => {
   return process.env[key] || defaultValue;
 };
 
-// Get optional number environment variable with default
 const getOptionalNumberEnv = (key: string, defaultValue: number): number => {
   const value = process.env[key];
   if (!value) {

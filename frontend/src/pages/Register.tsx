@@ -26,6 +26,15 @@ const Register: React.FC = () => {
     resolver: yupResolver(registerSchema)
   });
 
+  const onError = (errors: any): void => {
+    const errorMessages = Object.values(errors).map((error: any) => error.message);
+    if (errorMessages.length > 0) {
+      errorMessages.forEach((message: string) => {
+        toast.error(message);
+      });
+    }
+  };
+
   const onSubmit = async (data: RegisterFormData): Promise<void> => {
     try {
       setIsSubmitting(true);
@@ -33,7 +42,6 @@ const Register: React.FC = () => {
       toast.success('Registration successful!');
       navigate('/home');
     } catch (err: any) {
-      // Error is already handled by API interceptor
       setIsSubmitting(false);
     }
   };
@@ -42,7 +50,7 @@ const Register: React.FC = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Register</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input

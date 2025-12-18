@@ -30,7 +30,6 @@ const PetDetail: React.FC = () => {
         setPet(res.data.data);
       }
     } catch (error) {
-      // Error is already handled by API interceptor
     } finally {
       setLoading(false);
     }
@@ -49,7 +48,6 @@ const PetDetail: React.FC = () => {
         }
       }
     } catch (error) {
-      // Error is already handled by API interceptor
     }
   };
 
@@ -63,10 +61,8 @@ const PetDetail: React.FC = () => {
       setApplying(true);
       await api.post('/adoptions', { petId: id });
       toast.success('Application submitted successfully!');
-      // Refresh user application to show status
       await fetchUserApplication();
     } catch (error: any) {
-      // Error is already handled by API interceptor
     } finally {
       setApplying(false);
     }
