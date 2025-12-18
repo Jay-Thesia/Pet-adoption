@@ -1,0 +1,133 @@
+.admin-header {
+  margin: 40px 0;
+}
+
+.admin-header h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+.admin-tabs button {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.3s;
+}
+
+.admin-tabs button.active {
+  border-bottom-color: #4CAF50;
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.admin-section {
+  margin-top: 30px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pet-form-card {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.pet-form-card h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pets-list,
+.adoptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pet-item,
+.adoption-item {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pet-item-info,
+.adoption-info {
+  flex: 1;
+}
+
+.pet-item-info h3,
+.adoption-info h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.pet-item-actions,
+.adoption-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.status-available,
+.status-pending {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.status-adopted,
+.status-approved {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: #f44336;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .pet-item,
+  .adoption-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .pet-item-actions,
+  .adoption-actions {
+    width: 100%;
+  }
+
+  .pet-item-actions button,
+  .adoption-actions button {
+    flex: 1;
+  }
+}
+

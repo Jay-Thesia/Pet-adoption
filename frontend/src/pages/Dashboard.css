@@ -1,0 +1,75 @@
+.dashboard-header {
+  margin: 40px 0;
+}
+
+.dashboard-header h1 {
+  color: #333;
+}
+
+.no-applications {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.no-applications p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.application-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.application-info {
+  flex: 1;
+}
+
+.application-info h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.application-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.status-pending {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.status-approved {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: #f44336;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .application-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}
+

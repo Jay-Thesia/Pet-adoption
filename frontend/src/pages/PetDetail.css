@@ -1,0 +1,107 @@
+.pet-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin: 40px 0;
+}
+
+.pet-detail-image img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+
+.pet-detail-info h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.pet-details p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.status-available {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.status-adopted {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.description {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ddd;
+}
+
+.description h3 {
+  margin-bottom: 10px;
+}
+
+.apply-section {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ddd;
+}
+
+.application-status-section {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ddd;
+}
+
+.application-status-section h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.application-status-card {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.application-status-card p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.application-status {
+  margin-left: 10px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.status-pending.application-status {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-approved.application-status {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-rejected.application-status {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+@media (max-width: 768px) {
+  .pet-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
